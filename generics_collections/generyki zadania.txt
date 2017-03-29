@@ -1,0 +1,37 @@
+Zadanie 1:
+1. Przygotuj implementację generycznej listy jednokierunkowej
+2. Dodatkowa klasa (Node), modeluje pojedynczy element: zawiera wartość elementu oraz 
+referencje do kolejnego elementu
+3. Do listy jednokierunkowej możemy: dodawać, pobierać elementy, oprócz tego możemy sprawdzać 
+czy lista jest pusta, sprawdzać jej rozmiar, oraz usuwać wszystkie elementy
+4. Przygotuj klasę Step z jednym polem o nazwie description i typie String oraz 
+dziedziczące po niej klasy: SimpleStep i ComplexStep
+5. Wykorzystaj implementację listy jednokierunkowej i stwórz trzy listy, której typami będą klasy 
+z punktu 4
+6. Wypełnij listy testowymi elementami
+7. Stwórz metody "serwisowe":
+		- wyświetlające wartość danego elementu z naszych list
+		- wyświetlające zawartość całej listy
+		- łączące ze sobą dwie listy
+
+
+Zadanie 2:
+1. Zaimplementuj słownik
+2. Słownik posiada dwa elementy: klucz - termin, oraz wartość - wyjaśnienie terminu.
+Te dwa elementy są naszymi typami parametrycznymi.
+3. Do naszego słownika możemy dodawać nowe elementy, usuwać, pobierać wyjaśnienie podanego terminu,
+sprawdzać czy termin juz istnieje oraz sprawdzać rozmiar słownika
+4. Przygotuj klasy Term, Definition; mozemy mieć różne rodzaje terminów np. terminy prawne, 
+literackie, muzyczne...
+5. Pamiętaj, że terminy w słowniku przechowywane są alfabetycznie!
+6. Wykorzystaj implementację generycznego słownika i stwórz kilka słowników zawierające
+albo konkretne typy terminów albo ich miks, stwórz kilka danych testowych
+7. Stwórz metody "serwisowy" z których:
+	- wypiszesz wszystkie terminy z podanego słownika
+	- zwrócisz definicję dla podanego terminu
+	- połączysz ze sobą dwa słowniki
+	
+
+Zadanie 3: Wypożyczalnia
+1. Pobierz z repo klase	Rental
+2. Przygotuj generyczną klasę która usunie kłopotliwe castowanie
