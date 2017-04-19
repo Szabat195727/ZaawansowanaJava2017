@@ -1,5 +1,9 @@
 package pl.com.tt.patterns.npc;
 
+import pl.com.tt.patterns.gatekeeper.BattleStrategy;
+import pl.com.tt.patterns.gatekeeper.FriendStrategy;
+import pl.com.tt.patterns.gatekeeper.LoserStrategy;
+
 /**
  * Created by krystian on 19.04.17.
  */
