@@ -1,5 +1,8 @@
 package pl.com.tt.patterns.npc;
 
+import pl.com.tt.patterns.equipment.Equipment;
+import pl.com.tt.patterns.equipment.MagicEquipmentDecorator;
+import pl.com.tt.patterns.equipment.Weapon;
 import pl.com.tt.patterns.gatekeeper.BattleStrategy;
 import pl.com.tt.patterns.gatekeeper.FriendStrategy;
 import pl.com.tt.patterns.gatekeeper.HeroClass;
@@ -20,6 +23,12 @@ public class BeginJourney {
 
 		hero.changeStratego(new BattleStrategy());
 		hero.passThroughTheGate();
+
+		Equipment equipment = new Weapon();
+		System.out.println(equipment.getType());
+
+		Equipment magicEquipment = new MagicEquipmentDecorator(equipment);
+		System.out.println(magicEquipment.getType());
 	}
 	
 }
