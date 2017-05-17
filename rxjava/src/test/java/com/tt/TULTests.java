@@ -1,5 +1,6 @@
 package com.tt;
 
+import com.tt.cache.CacheServer;
 import com.tt.dao.Person;
 import com.tt.dao.PersonDao;
 import com.tt.weather.Weather;
@@ -10,8 +11,12 @@ import org.slf4j.LoggerFactory;
 import rx.Observable;
 import rx.observables.BlockingObservable;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * Created by dubelm on 2017-05-15.
@@ -86,6 +91,48 @@ public class TULTests {
         BlockingObservable<String> blocking = str.toBlocking();
 
         blocking.subscribe(this::print);
+    }
+
+    @Test
+    public void test6() {
+        CacheServer c1 = new CacheServer();
+        CacheServer c2 = new CacheServer();
+
+        Observable<String> s1 = c1.rxFindBy(123);
+        Observable<String> s2 = c2.rxFindBy(123);
+
+        // Wystarczy ze pobierzemy jeden obiekt, nie interesuje nas z jakiego serwera
+
+        Observable<String> allResults = s1
+                .mergeWith(s2)
+                .first();
+
+        allResults
+                .toBlocking()
+                .subscribe(this::print);
+    }
+
+    @Test
+    public void test7() {
+        Observable
+                .interval(1, TimeUnit.SECONDS)
+                .toBlocking()
+                .subscribe(this::print);
+
+    }
+
+    List<String> childredOf(File file){
+        return Arrays
+                .asList(file.listFiles())
+                .stream()
+                .map(File::getName)
+                .collect(Collectors.toList());
+    }
+
+    @Test
+    public void test8() {
+        File tmp = new File("./");
+        System.out.println(childredOf(tmp));
     }
 
 }
