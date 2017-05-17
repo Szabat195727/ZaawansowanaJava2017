@@ -121,7 +121,8 @@ public class TULTests {
 
     }
 
-    List<String> childredOf(File file){
+    // Odczyt wszystkich plikow w folderze
+    List<String> childredOf(File file) {
         return Arrays
                 .asList(file.listFiles())
                 .stream()
@@ -133,6 +134,35 @@ public class TULTests {
     public void test8() {
         File tmp = new File("./");
         System.out.println(childredOf(tmp));
+    }
+
+    @Test
+    public void test9() {
+        File tmp = new File("./");
+
+        // Nasłuchuje zmian w plikach i wypisuje wszystkie unikalne pliki
+        Observable
+                .interval(1, TimeUnit.SECONDS)
+                .concatMapIterable(x -> childredOf(tmp))
+                .distinct()
+                .toBlocking()
+                .subscribe(this::print);
+    }
+
+    @Test
+    public void test10() {
+        Observable<Long> soap = verySlowSoapService();
+        soap
+                .timeout(2, TimeUnit.SECONDS)   // czekamy max 2 sekundy
+                .doOnError(ex -> logger.warn("Ooops" + ex))
+                .retry(4)   // 4 retry robimy
+                .onErrorReturn(ex -> -1L)
+                .toBlocking()
+                .subscribe(this::print);
+    }
+
+    Observable<Long> verySlowSoapService(){
+        return Observable.timer(10, TimeUnit.MINUTES);
     }
 
 }
