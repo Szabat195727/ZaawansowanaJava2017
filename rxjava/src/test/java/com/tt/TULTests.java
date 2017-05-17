@@ -183,4 +183,10 @@ public class TULTests {
         return Observable.timer(10, TimeUnit.SECONDS);
     }
 
+    /*
+    Zadanie dodatkowe na punkty
+    Schiphol API
+    Start nowego samolotu to nowy event itp
+     */
+
 }
