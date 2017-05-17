@@ -2,10 +2,13 @@ package com.tt;
 
 import com.tt.dao.Person;
 import com.tt.dao.PersonDao;
+import com.tt.weather.Weather;
+import com.tt.weather.WeatherClient;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Observable;
+import rx.observables.BlockingObservable;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -17,6 +20,7 @@ public class TULTests {
 
     private static Logger logger = LoggerFactory.getLogger(TULTests.class);
     private PersonDao personDao = new PersonDao();
+    private WeatherClient weatherClient = new WeatherClient();
 
     @Test
     public void test1() {
@@ -62,6 +66,26 @@ public class TULTests {
                 .timeout(1250, TimeUnit.MILLISECONDS);
 
         personObservable.subscribe(this::print);
+    }
+
+    @Test
+    public void test5() {
+        /*
+        Dwa asynchronicznie pobierane zasoby z różnych źródeł
+         */
+
+        Observable<Person> person = personDao.rxFindById(23);
+        Observable<Weather> oslo = weatherClient.rxFetch("Oslo");
+
+        // Czekamy aż pobierze się osoba i pogoda
+        Observable<String> str = person.zipWith(oslo,
+                (Person p, Weather w) -> p + " : " + w
+        );
+
+        // Teraz ustawiamy blokowanie wartku az do skonczenia poprzedniego zadania
+        BlockingObservable<String> blocking = str.toBlocking();
+
+        blocking.subscribe(this::print);
     }
 
 }
