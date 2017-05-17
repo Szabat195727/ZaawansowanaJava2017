@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Observable;
 import rx.observables.BlockingObservable;
+import rx.observers.TestSubscriber;
+import rx.schedulers.TestScheduler;
 
 import java.io.File;
 import java.util.Arrays;
@@ -152,17 +154,33 @@ public class TULTests {
     @Test
     public void test10() {
         Observable<Long> soap = verySlowSoapService();
+        TestScheduler testScheduler = new TestScheduler();
+        TestSubscriber<Long> testSubscriber = new TestSubscriber<>();
         soap
-                .timeout(2, TimeUnit.SECONDS)   // czekamy max 2 sekundy
+                .timeout(2, TimeUnit.SECONDS, testScheduler)   // czekamy max 2 sekundy
                 .doOnError(ex -> logger.warn("Ooops" + ex))
                 .retry(4)   // 4 retry robimy
                 .onErrorReturn(ex -> -1L)
-                .toBlocking()
-                .subscribe(this::print);
+//                .toBlocking()
+                .subscribe(testSubscriber);
+
+        testSubscriber.assertNoErrors();
+        testSubscriber.assertNoValues();
+
+
+        // Symulacja uplywajacego czasu
+        testScheduler.advanceTimeBy(9999, TimeUnit.MILLISECONDS);   // Jesteśmy na millisekunde przed wykonaniem testu
+
+        testSubscriber.assertNoErrors();
+        testSubscriber.assertNoValues();
+
+        testScheduler.advanceTimeBy(1, TimeUnit.MILLISECONDS);
+
+
     }
 
     Observable<Long> verySlowSoapService(){
-        return Observable.timer(10, TimeUnit.MINUTES);
+        return Observable.timer(10, TimeUnit.SECONDS);
     }
 
 }
