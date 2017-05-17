@@ -3,6 +3,7 @@ package com.tt.dao;
 import com.tt.util.Sleeper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import rx.Observable;
 
 import java.time.Duration;
 
@@ -15,6 +16,10 @@ public class PersonDao {
 		log.info("Loading {}", id);
 		Sleeper.sleep(Duration.ofMillis(1000));
 		return new Person();
+	}
+
+	public Observable<Person> rxFindById(int id){
+		return Observable.fromCallable(() -> findById(id));
 	}
 
 }
